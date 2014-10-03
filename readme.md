@@ -60,3 +60,10 @@ Example:
 |-------------------|-------------------|---------------------------|
 | Add semicolon     | alt+w             | Semicolon: Add            |
 | Add semicolons    | alt+shift+w       | Semicolon: Add everywhere |
+
+
+### Dependencies
+
+- https://github.com/shagabutdinov/sublime-statement
+- https://github.com/SublimeLinter/SublimeLinter3
+- https://github.com/SublimeLinter/SublimeLinter-[your language]
