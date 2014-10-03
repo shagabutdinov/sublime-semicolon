@@ -1,0 +1,11 @@
+[
+  {
+    "caption": "Semicolon: Add",
+    "command": "add_semicolon_to_statement",
+  },
+
+  {
+    "caption": "Semicolon: Add all",
+    "command": "add_semicolon_to_statements"
+  },
+]
