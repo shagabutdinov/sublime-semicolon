@@ -4,7 +4,7 @@ Add semicolons automatically by hotkey.
 
 ### Demo
 
-![Demo](https://raw.github.com/shagabutdinov/sublime-semicolon/master/demo/demo.gif "Demo")
+![Demo](https://github.com/shagabutdinov/sublime-enhanced-demos/raw/master/semicolon.gif "Demo")
 
 
 ### Installation
@@ -64,6 +64,6 @@ Example:
 
 ### Dependencies
 
-- https://github.com/shagabutdinov/sublime-statement
-- https://github.com/SublimeLinter/SublimeLinter3
-- https://github.com/SublimeLinter/SublimeLinter-[your language]
+* [Statement](https://github.com/shagabutdinov/sublime-statement)
+* https://github.com/SublimeLinter/SublimeLinter3
+* https://github.com/SublimeLinter/SublimeLinter-[your language]

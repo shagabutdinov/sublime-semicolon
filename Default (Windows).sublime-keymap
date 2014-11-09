@@ -3,12 +3,16 @@
     "keys": ["alt+w"],
     "command": "add_semicolon_to_statement",
     "context": [
+      {"key": "setting.sublime_enhanced_keybindings", "operator": "equal", "operand": true},
       {"key": "setting.is_widget", "operator": "equal", "operand": false}
     ]
   },
 
   {
     "keys": ["alt+shift+w"],
-    "command": "add_semicolon_to_statements"
+    "command": "add_semicolon_to_statements",
+    "context": [
+      {"key": "setting.sublime_enhanced_keybindings", "operator": "equal", "operand": true},
+    ]
   },
 ]

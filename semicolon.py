@@ -2,7 +2,14 @@ import sublime
 import sublime_plugin
 
 from Statement import statement
-from SublimeLinter.lint import persist
+
+try:
+  from SublimeLinter.lint import persist
+except ImportError:
+  sublime.error_message("Dependency import failed; please read readme for " +
+   "Statement plugin for installation instructions; to disable this " +
+   "message remove this plugin")
+
 
 def add(view, edit, point):
   container = statement.get_root_statement(view, point)
