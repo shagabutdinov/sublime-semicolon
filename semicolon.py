@@ -45,17 +45,12 @@ def add_all(view, edit):
     for error in errors[line]:
       position, error_text = error
 
-      point = view.text_point(line, position)
-      is_semicolon_required = False
-
-      # php and jshint
-      if 'unexpected' in error_text or 'Missing semicolon' in error_text:
-        is_semicolon_required = True
-        point -= 1
-
-      # jsl
-      if 'missing semicolon' in error_text:
-        is_semicolon_required = True
+      point = view.text_point(line, position) - 1
+      is_semicolon_required = (
+        'unexpected' in error_text or
+        'Missing semicolon' in error_text or
+        'missing semicolon' in error_text
+      )
 
       if is_semicolon_required:
         _add(view, edit, point)
@@ -63,6 +58,7 @@ def add_all(view, edit):
 def _add(view, edit, point):
   statement_start = view.line(point).a
   statement_point = _get_previous_statement_point(view, statement_start)
+
   add(view, edit, statement_point)
 
 def _get_previous_statement_point(view, point):
