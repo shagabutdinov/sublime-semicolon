@@ -14,10 +14,20 @@ except ImportError:
 def add(view, edit, point):
   container = statement.get_root_statement(view, point)
   line = view.line(container[1])
-  last_char_region = sublime.Region(line.b - 1, line.b)
-  last_char = view.substr(last_char_region)
 
-  if last_char == ';' or last_char == ':' or last_char == ',':
+  next_char = view.substr(sublime.Region(line.b, line.b + 1))
+
+  prev_char_region = sublime.Region(line.b - 1, line.b)
+  prev_char = view.substr(prev_char_region)
+
+  is_semicolon_not_required = (
+    prev_char == ';' or
+    prev_char == ':' or
+    prev_char == ',' or
+    next_char == ';'
+  )
+
+  if is_semicolon_not_required:
     return
 
   view.insert(edit, container[1], ';')
