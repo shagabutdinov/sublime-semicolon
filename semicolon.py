@@ -1,7 +1,9 @@
 import sublime
 import sublime_plugin
+import re
 
 from Statement import statement
+from Expression import expression
 
 try:
   from SublimeLinter.lint import persist
@@ -17,8 +19,13 @@ def add(view, edit, point):
 
   next_char = view.substr(sublime.Region(line.b, line.b + 1))
 
-  prev_char_region = sublime.Region(line.b - 1, line.b)
-  prev_char = view.substr(prev_char_region)
+  prev_char_region = sublime.Region(line.a, line.b)
+  prev_chars = view.substr(prev_char_region)
+  prev_char_match = re.search(r'(\S)\s*$', prev_chars)
+
+  prev_char = None
+  if prev_char_match != None:
+    prev_char = prev_char_match.group(1)
 
   is_semicolon_not_required = (
     prev_char == ';' or
@@ -26,6 +33,13 @@ def add(view, edit, point):
     prev_char == ',' or
     next_char == ';'
   )
+
+  if 'source' not in view.scope_name(line.b):
+    is_semicolon_not_required = True
+
+  is_keyword = is_keyword_statement(view, line.a + prev_char_match.start(1) + 1)
+  if prev_char == '}' and is_keyword:
+    is_semicolon_not_required = True
 
   if is_semicolon_not_required:
     return
@@ -45,6 +59,34 @@ def add(view, edit, point):
 
   view.sel().clear()
   view.sel().add_all(new_sels)
+
+def is_keyword_statement(view, point):
+  nesting = expression.get_nesting(view, point - 1, expression = r'{')
+  if nesting == None:
+    return False
+
+  chars_before_nesting = view.substr(sublime.Region(
+    max(nesting[0] - 512, 0),
+    nesting[0] - 1
+  ))
+
+  match = re.search(r'\)(\s*)$', chars_before_nesting)
+  if match == None:
+    return False
+
+  parenthesis_nesting = expression.get_nesting(view, nesting[0] - 2 -
+    len(match.group(1)), expression = r'\(')
+
+  if parenthesis_nesting == None:
+    return False
+
+  chars_before_parenthesis = view.substr(sublime.Region(
+    max(parenthesis_nesting[0] - 512, 0),
+    parenthesis_nesting[0] - 1
+  ))
+
+  keyword_regexp = r'(if|for|while|function\s+\w+)\s*$'
+  return re.search(keyword_regexp, chars_before_parenthesis) != None
 
 def add_all(view, edit):
   if not view.id() in persist.errors:
