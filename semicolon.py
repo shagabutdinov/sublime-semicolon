@@ -34,7 +34,12 @@ def add(view, edit, point):
     next_char == ';'
   )
 
-  if 'source' not in view.scope_name(line.b):
+  is_source = (
+    'source' not in view.scope_name(line.b) or
+    'source' not in view.scope_name(line.b + 1)
+  )
+
+  if is_source:
     is_semicolon_not_required = True
 
   is_keyword = is_keyword_statement(view, line.a + prev_char_match.start(1) + 1)
