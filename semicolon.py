@@ -7,11 +7,11 @@ from Expression import expression
 
 try:
   from SublimeLinter.lint import persist
-except ImportError:
+except ImportError as error:
   sublime.error_message("Dependency import failed; please read readme for " +
    "Statement plugin for installation instructions; to disable this " +
-   "message remove this plugin")
-
+   "message remove this plugin; message: " + str(error))
+  raise error
 
 def add(view, edit, point):
   container = statement.get_root_statement(view, point)
