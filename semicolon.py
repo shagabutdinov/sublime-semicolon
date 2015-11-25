@@ -8,10 +8,11 @@ from Expression import expression
 try:
   from SublimeLinter.lint import persist
 except ImportError as error:
-  sublime.error_message("Dependency import failed; please read readme for " +
-   "Statement plugin for installation instructions; to disable this " +
-   "message remove this plugin; message: " + str(error))
-  raise error
+  print("Dependency import failed; please read readme for " +
+   "Semicolon plugin for installation instructions; to disable this " +
+   "message remove this plugin; message: " + str(error) + "; can not import " +
+   "persist from SublimeLinter.lint: add_all functionality will not be " +
+   "avaiable")
 
 def add(view, edit, point):
   container = statement.get_root_statement(view, point)
