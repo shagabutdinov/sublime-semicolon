@@ -32,6 +32,7 @@ def add(view, edit, point):
     prev_char == ';' or
     prev_char == ':' or
     prev_char == ',' or
+    prev_char == '>' or
     next_char == ';'
   )
 
@@ -40,15 +41,19 @@ def add(view, edit, point):
     'source' not in view.scope_name(line.b + 1)
   )
 
-  if is_source:
-    is_semicolon_not_required = True
-
-  is_keyword = is_keyword_statement(view, line.a + prev_char_match.start(1) + 1)
-  if prev_char == '}' and is_keyword:
-    is_semicolon_not_required = True
-
   if is_semicolon_not_required:
     return
+
+  if is_source:
+    return
+
+  is_keyword = is_keyword_statement(
+    view,
+    line.a + prev_char_match.start(1) + 1
+  )
+
+  if prev_char == '}' and is_keyword:
+    return is_keyword
 
   view.insert(edit, container[1], ';')
   new_sels = []
